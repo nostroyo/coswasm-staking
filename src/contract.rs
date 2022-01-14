@@ -24,7 +24,7 @@ pub fn instantiate(
 
     let initial_state = State {
         admin,
-        poolTotalAmount: Default::default()
+        pool_total_amount: Default::default()
     };
     STATE.save(deps.storage, &initial_state)?;
 
@@ -44,7 +44,6 @@ pub fn execute(
         ExecuteMsg::Deposit {} => stake(deps, info),
         ExecuteMsg::UpdatePoolTotalAmount {} => execute_update_pool_total(deps, info),
         ExecuteMsg::Withdraw {amount} => execute_withdraw(deps, info, amount),
-
     }
 }
 
@@ -93,7 +92,7 @@ pub fn execute_update_pool_total(deps: DepsMut, info: MessageInfo) -> Result<Res
         println!("user {} amount {}", std::str::from_utf8(&user_amount.0).unwrap(), user_amount.1);
         current_amount = user_amount.1;
         current_user_address = Addr::unchecked(std::str::from_utf8(&user_amount.0).unwrap().to_string());
-        let share = Decimal::from_ratio(current_amount,state.poolTotalAmount);
+        let share = Decimal::from_ratio(current_amount,state.pool_total_amount);
         let gain_by_user= share * amount_send;
 
         GAIN_BY_USER.update(deps.storage, &current_user_address, |balance: Option<Uint128>| -> StdResult<_> {
@@ -102,7 +101,7 @@ pub fn execute_update_pool_total(deps: DepsMut, info: MessageInfo) -> Result<Res
     }
 
     STATE.update(deps.storage, |mut state|-> Result<_, ContractError> {
-        state.poolTotalAmount += amount_send;
+        state.pool_total_amount += amount_send;
         Ok(state)
     })?;
 
@@ -118,7 +117,7 @@ pub fn stake(deps: DepsMut, info: MessageInfo) -> Result<Response, ContractError
     })?;
 
     STATE.update(deps.storage, |mut state|-> Result<_, ContractError> {
-        state.poolTotalAmount += amount_send;
+        state.pool_total_amount += amount_send;
         Ok(state)
     })?;
 
@@ -148,7 +147,7 @@ pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
         },
         QueryMsg::GetPoolTotalAmount { } => {
              let state = STATE.load(deps.storage)?;
-            to_binary(&PoolTotalAmountResponse{amount: state.poolTotalAmount})
+            to_binary(&PoolTotalAmountResponse{amount: state.pool_total_amount })
         }
         QueryMsg::GetUserGain { user } => {
             let amount = GAIN_BY_USER
@@ -174,11 +173,6 @@ fn verify_token_deposit(info: MessageInfo) -> Result<Uint128, ContractError> {
     Ok(amount_of_coin_stackable)
 
 }
-
-// fn query_count(deps: Deps) -> StdResult<CountResponse> {
-//     let state = STATE.load(deps.storage)?;
-//     Ok(CountResponse { count: state.count })
-// }
 
 #[cfg(test)]
 mod tests {
