@@ -14,14 +14,14 @@ pub struct InstantiateMsg {
 pub enum ExecuteMsg {
     Deposit {},
     UpdatePoolTotalAmount {},
-    Withdraw {amount: Uint128},
+    Withdraw { amount: Uint128 },
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum QueryMsg {
-    GetUserAmount {user: Addr},
-    GetUserGain {user: Addr},
+    GetUserAmount { user: Addr },
+    GetUserGain { user: Addr },
     GetPoolTotalAmount {},
 }
 
@@ -40,4 +40,3 @@ pub struct PoolTotalAmountResponse {
 pub struct UserGainResponse {
     pub amount: Uint128,
 }
-

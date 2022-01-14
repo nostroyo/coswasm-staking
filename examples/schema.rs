@@ -3,7 +3,9 @@ use std::fs::create_dir_all;
 
 use cosmwasm_schema::{export_schema, remove_schemas, schema_for};
 
-use simple_option::msg::{UserAmountResponse, ExecuteMsg, InstantiateMsg, QueryMsg, PoolTotalAmountResponse};
+use simple_option::msg::{
+    ExecuteMsg, InstantiateMsg, PoolTotalAmountResponse, QueryMsg, UserAmountResponse,
+};
 use simple_option::state::State;
 
 fn main() {
