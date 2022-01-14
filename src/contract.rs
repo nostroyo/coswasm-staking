@@ -109,7 +109,7 @@ pub fn execute_update_pool_total(
         return Err(ContractError::Unauthorized {});
     }
 
-    let amount_send = verify_token_deposit(info.clone())?;
+    let amount_send = verify_token_deposit(info)?;
 
     let all_user: StdResult<Vec<_>> = AMOUNT_BY_USER
         .range_raw(deps.storage, None, None, Order::Ascending)
