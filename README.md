@@ -1,6 +1,6 @@
 # coswasm-staking
 
-Contract deploying on [sandynet](https://sandynet.aneka.io/accounts/wasm1rlk29pupm6tuty66dngp9dx876j6qt63ph337w)
+Contract deploying on [sandynet](https://sandynet.aneka.io/accounts/wasm1l340jm4hw6ltay3cwyu4pg97p532qr5lmchqwv)
 ## General Info
 The contract has 3 *execute* functions:
 - `deposit` to deposit funds

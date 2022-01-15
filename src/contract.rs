@@ -93,6 +93,11 @@ pub fn execute_withdraw(
         },
     )?;
 
+    STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
+        state.pool_total_amount -= gain_to_withdraw + amount;
+        Ok(state)
+    })?;
+
     Ok(send_tokens(
         info.sender,
         coins((gain_to_withdraw + amount).u128(), "ubay"),
@@ -534,5 +539,10 @@ mod tests {
 
         let value: UserAmountResponse = from_binary(&res).unwrap();
         assert_eq!(value.amount, Uint128::from(1_000_000u128));
+
+        let res = query(deps.as_ref(), mock_env(), QueryMsg::GetPoolTotalAmount {}).unwrap();
+
+        let value: PoolTotalAmountResponse = from_binary(&res).unwrap();
+        assert_eq!(2_000_000u128, value.amount.u128());
     }
 }
